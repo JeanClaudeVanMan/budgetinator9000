@@ -13,6 +13,7 @@ A serverless app that ingests financial CSV uploads, categorizes transactions, a
 - Prefer `async/await` over callbacks or raw Promises
 - Keep Lambda handlers thin — business logic in separate modules
 - Name Lambda functions by their Step Function role: `cleaner`, `categorizer`, `recorder`, `report-maker`, `notifier`
+- Name any generic names that leak outside of this project (infra, docs) with a prefix suitable from `infra/constants.ts`
 
 ## Project Structure
 

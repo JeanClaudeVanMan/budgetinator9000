@@ -2,6 +2,10 @@
   "name": "budgetinator9000",
   "version": "0.1.0",
   "private": true,
+  "workspaces": [
+    "lambdas/*",
+    "infra"
+  ],
   "scripts": {
     "build": "tsc --build",
     "cdk": "cd infra && npx cdk"

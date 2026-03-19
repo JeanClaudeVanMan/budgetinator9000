@@ -3,7 +3,7 @@ import * as s3 from 'aws-cdk-lib/aws-s3';
 import { Construct } from 'constructs';
 import { appNamePrefix } from '../constants';
 
-export class InfraStack extends cdk.Stack {
+export class BaseInfraStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 

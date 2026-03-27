@@ -19,26 +19,27 @@ Tasks are ordered by dependency. Sub-tasks within a group can be parallelised.
 > Define AWS resources before wiring up Lambda code.
 
 **T-02** *(depends on T-01)*
-- [ ] **T-02.1** CDK stack: S3 bucket with prefix layout (`uploads/`, `quarantine/`, `processed/`) and lifecycle rules (90-day expiry on `quarantine/`)
+- [x] **T-02.1** CDK stack: S3 bucket with prefix layout (`uploads/`, `quarantine/`, `processed/`) and lifecycle rules (90-day expiry on `quarantine/`)
 
 **T-03** *(depends on T-02)*
-- [ ] **T-03.1** CDK stack: DynamoDB table — partition key `userId`, sort key `transactionDate#id`
+- [x] **T-03.1** CDK stack: DynamoDB table — partition key `YYYY-MM` (month), sort key `date#id` (optimised for monthly report queries; no userId needed for single-family use)
 
 **T-04** *(depends on T-02, T-03)*
-- [ ] **T-04.1** CDK stack: Step Function state machine skeleton — placeholder Pass states for each step, wired in sequence
+- [x] **T-04.1** CDK stack: Step Function state machine skeleton — placeholder Pass states for each step, wired in sequence
 
 **T-05** *(depends on T-04 — all parallel)*
-- [ ] **T-05.1** CDK stack: S3 event notification → EventBridge rule → triggers Step Function on `uploads/` prefix
-- [ ] **T-05.2** CDK stack: SES email identity resource + verified sender address
-- [ ] **T-05.3** CDK stack: IAM roles and policies for each Lambda (scoped S3, DynamoDB, SES permissions)
+- [x] **T-05.1** CDK stack: S3 event notification → EventBridge rule → triggers Step Function on `uploads/` prefix
+- [x] **T-05.2** CDK stack: SES email identity resource + verified sender address
+- [x] **T-05.3** CDK stack: IAM roles and policies for each Lambda (scoped S3, DynamoDB, SES permissions)
 
 ---
 
 ## Epic 3 — Lambda Pipeline (happy path)
 > Build each Lambda in pipeline order.
+- In planning, ask clarifying questions. Especially about the data.
 
 **T-06** *(depends on T-01, T-02)*
-- [ ] **T-06.1** **Cleaner Lambda** — parse CSV, validate schema, normalise rows, return cleaned `Transaction[]`
+- [ ] **T-06.1** **Cleaner Lambda** — parse CSV, validate schema, normalise rows, return cleaned `Transaction[]`. Use `assets/sample-csvs` files as example. Note the naminng like `<bank>-<account>` like `bmo-visa`
 
 **T-07** *(depends on T-01, T-06)*
 - [ ] **T-07.1** **Categorizer Lambda** — string-match rules against transaction descriptions, return `{ categorized, uncategorized }`
@@ -56,6 +57,7 @@ Tasks are ordered by dependency. Sub-tasks within a group can be parallelised.
 
 ## Epic 4 — Error Handling
 > Layer error handling on top of the working happy path.
+- In planning, ask clarifying questions.
 
 **T-11** *(depends on T-06)*
 - [ ] **T-11.1** Cleaner: add schema validation guard at the top; on failure move file to `quarantine/bad-format/YYYY-MM/` and throw `CsvSchemaError`

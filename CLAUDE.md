@@ -39,12 +39,13 @@ All Lambda input/output types are defined in `shared/src/index.ts`. Each Lambda 
 ## Code Style
 
 - Use TypeScript for all CDK infra and Lambda handlers
+- Minimal comments unless asked. Dont explain obvious code. Dont use ref # or ambiguos details.
 - Prefer `async/await` over callbacks or raw Promises
 - All infra in one file: `infra/lib/infra-stack.ts`
 - Keep Lambda handlers thin — business logic in separate modules
 - Lambda handlers: only event validation; initialize SDK clients and DB connections outside the handler; keep code idempotent
 - Share common logic in `/shared` — prefer small reusable helpers
-- Step Functions: maintain a `.md` mermaid diagram alongside the state machine definition; update when changed
+- Step Functions: maintain a `.md` mermaid diagram alongside the state machine definition; update when changed. Dont use `\n` in mermaid.
 
 ## Infra Conventions
 

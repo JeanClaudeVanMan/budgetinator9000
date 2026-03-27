@@ -1,0 +1,30 @@
+{
+  "bmo-visa": {
+    "description": "BMO Visa credit card upload",
+    "input": {
+      "bucketName": "bg9k-uploads",
+      "objectKey": "uploads/2026-02/bmo-visa.csv"
+    }
+  },
+  "bmo-chequing": {
+    "description": "BMO chequing account upload",
+    "input": {
+      "bucketName": "bg9k-uploads",
+      "objectKey": "uploads/2026-02/bmo-chequing.csv"
+    }
+  },
+  "tangerine-mc": {
+    "description": "Tangerine Mastercard upload",
+    "input": {
+      "bucketName": "bg9k-uploads",
+      "objectKey": "uploads/2026-03/tangerine-mc.csv"
+    }
+  },
+  "simplii-chequing": {
+    "description": "Simplii chequing account upload",
+    "input": {
+      "bucketName": "bg9k-uploads",
+      "objectKey": "uploads/2023-06/simplii-chequing.csv"
+    }
+  }
+}

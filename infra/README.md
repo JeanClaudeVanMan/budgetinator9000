@@ -9,6 +9,12 @@ Node.js is required. Install via Homebrew: `brew install node`
 ## Commands
 
 ```bash
+# Login to AWS
+aws login
+
+# Verify profile, should show 
+aws login bg9k-baseinfrastack-
+
 # Preview changes
 npm run cdk diff
 

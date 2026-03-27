@@ -1,7 +1,3 @@
-# CLAUDE.md
-
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
-
 # Budgetinator 9000
 
 A serverless app that ingests financial CSV uploads, categorizes transactions, and emails monthly reports.
@@ -16,14 +12,34 @@ A serverless app that ingests financial CSV uploads, categorizes transactions, a
 ## Commands
 
 - `npm run build` — compile all workspaces (root `tsc --build`)
-- `npm run cdk deploy` — deploy all stacks
 - `npm run cdk diff` — preview infra changes
+- never deploy.
+
+## Repository Layout
+
+```
+infra/
+  bin/infra.ts                         ← CDK entrypoint
+  lib/infra-stack.ts                   ← ALL infra defined here (one file)
+  lib/constructs/BudgetinatorFunction.ts ← use for every Lambda definition
+  constants.ts                         ← appNamePrefix = "BG9k-"
+lambdas/
+  cleaner/src/index.ts
+  categorizer/src/index.ts
+  recorder/src/index.ts
+  report-maker/src/index.ts
+  notifier/src/index.ts
+shared/src/interfaces/index.ts         ← canonical catalog of all pipeline interfaces and helpers
+tasks.md                               ← check off completed tasks here
+```
 
 ## Architecture
 
-CSV uploaded to S3 → EventBridge → Step Function → `cleaner` → `categorizer` → `recorder` → `report-maker` → `notifier` (SES email). On `CsvSchemaError` from cleaner, Step Function catches and routes to `notifier` with `type: 'error'`.
+S3 upload → EventBridge → Step Function → `cleaner` → `categorizer` → `recorder` → `report-maker` → `notifier` (SES email).
 
-### S3 layout
+On `CsvSchemaError` from `cleaner`, Step Function catches and routes directly to `notifier` with `type: 'error'`.
+
+### S3 Layout
 
 ```
 uploads/                          ← user drops CSV files here
@@ -32,33 +48,49 @@ quarantine/uncategorized/YYYY-MM/ ← unmatched rows as JSON (90-day expiry)
 processed/YYYY-MM/                ← successfully processed files
 ```
 
-### Lambda pipeline contracts
+### Step Function I/O Chain
 
-All Lambda input/output types are defined in `shared/src/index.ts`. Each Lambda receives the previous Lambda's output as its input (`CleanerOutput` → `CategorizerInput`, etc.). The `notifier` accepts a `NotifierInput` with `type: 'report' | 'error'`.
+Each Lambda receives the previous Lambda's output as its input. All types live in `shared/src/index.ts`.
 
-## Code Style
+```
+CleanerInput         → cleaner        → CleanerOutput
+CleanerOutput        → categorizer    → CategorizerOutput
+CategorizerOutput    → recorder       → RecorderOutput
+RecorderOutput       → report-maker   → ReportMakerOutput
+ReportMakerOutput    → notifier       (type: 'report')
 
-- Use TypeScript for all CDK infra and Lambda handlers
-- Minimal comments unless asked. Dont explain obvious code. Dont use ref # or ambiguos details.
-- Prefer `async/await` over callbacks or raw Promises
-- All infra in one file: `infra/lib/infra-stack.ts`
-- Keep Lambda handlers thin — business logic in separate modules
-- Lambda handlers: only event validation; initialize SDK clients and DB connections outside the handler; keep code idempotent
-- Share common logic in `/shared` — prefer small reusable helpers
-- Step Functions: maintain a `.md` mermaid diagram alongside the state machine definition; update when changed. Dont use `\n` in mermaid.
+{ type: 'error', error: { name, cause, objectKey } } → notifier  (error path)
+```
 
-## Infra Conventions
+Key field: `NotifierInput.type: 'report' | 'error'` — controls notifier behaviour.
 
-- All resources use `appNamePrefix` (`BG9k-`) from `infra/constants.ts`
-- Use the `BudgetinatorFunction` construct (`infra/lib/constructs/BudgetinatorFunction.ts`) for all Lambda definitions — it auto-applies the naming convention
+`quarantine/uncategorized/` accumulates unmatched rows as future ML training data; the `{ categorized, uncategorized }` contract from `categorizer` is stable by design.
+
+## Code Rules
+
+- Before adding or modifying any types, read `shared/src/index.ts` first — it is the canonical catalog. Never define pipeline types locally in a Lambda; extend `shared/src/index.ts` instead.
+- TypeScript everywhere (infra and Lambdas)
+- `async/await` only — no callbacks or raw Promise chains
+- Lambda handlers: validate event, then delegate to modules. Initialize SDK clients and DB connections **outside** the handler. Keep handlers idempotent.
+- Business logic goes in modules alongside the handler, not in the handler itself
+- Shared helpers go in `shared/src/index.ts`
+- Minimal comments — only where logic is non-obvious. No obvious code explanations, no ref numbers, no vague labels.
+- No tests unless explicitly asked
+
+## Infra Rules
+
+- All infra in `infra/lib/infra-stack.ts` — never split across files
+- Every Lambda must use `BudgetinatorFunction` construct — it enforces the `BG9k-` naming prefix
+- All resource names derive from `appNamePrefix` in `infra/constants.ts`
 - Region: `us-west-2`
-- No manual console changes — all infra via CDK
+- No manual AWS console changes — CDK only
+- Step Functions: keep a `.md` mermaid diagram alongside the state machine definition; update it when the definition changes. Do not use `\n` in mermaid diagrams.
 
 ## Key Decisions
 
-- Prefer simplicity and brevity over features
-- No tests unless asked
-- `quarantine/uncategorized/` accumulates unmatched rows as future ML training data; the categorizer's `{ categorized, uncategorized }` contract is stable by design
+- Prefer simplicity and brevity — don't add features beyond what's asked
+- Don't add error handling, validation, or fallbacks for scenarios that can't happen
+- Don't create abstractions for one-off operations
 
 ## Workflow
 

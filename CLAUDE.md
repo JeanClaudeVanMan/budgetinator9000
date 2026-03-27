@@ -11,9 +11,13 @@ A serverless app that ingests financial CSV uploads, categorizes transactions, a
 
 - Use TypeScript for all CDK infra and Lambda handlers
 - Prefer `async/await` over callbacks or raw Promises
+- Infra: in one file `infra/lib/infra-stack.ts`, discover, reuse
 - Keep Lambda handlers thin — business logic in separate modules
-- Name Lambda functions by their Step Function role: `cleaner`, `categorizer`, `recorder`, `report-maker`, `notifier`
-- Name any generic names that leak outside of this project (infra, docs) with a prefix suitable from `infra/constants.ts`
+- Name Lambda: by their role: `cleaner`, `categorizer`, `recorder`, `report-maker`, `notifier`
+- Lambda infra: add one comment explaining responsibility
+- Lambda: only handles event validation, initialize SDK clients and database connections outside of the function handler, idempotent code
+- Shared: Share any common logic in `/shared` prefer reuseable small helpers
+- Step Functions: create a .md mermaid document near where step function logic is defined, maintain when changed
 
 ## Project Structure
 
@@ -43,3 +47,10 @@ A serverless app that ingests financial CSV uploads, categorizes transactions, a
 
 - Do not skip CDK for any infra — no manual console changes
 - Do not commit AWS credentials or `.env` files
+
+## AWS Context
+
+- Naming: follow this format `new s3.Bucket(this, `${appNamePrefix}TransactionsBucket`,...` where appNamePrefix includes `-`, no spacing
+- Region: us-west-2
+
+

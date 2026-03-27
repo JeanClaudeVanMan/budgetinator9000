@@ -79,3 +79,27 @@ The Notifier Lambda handles both success and error notifications via a `type` fi
 ### ML upgrade path
 
 The `quarantine/uncategorized/` prefix accumulates unmatched transactions — this becomes the training dataset when upgrading to ML categorization. The Categorizer's output contract (`{ categorized, uncategorized }`) stays stable; only the matching logic inside changes (rules → scikit-learn inference). DynamoDB rows with `category = "uncategorized"` can be labeled and exported for supervised training.
+
+### V2 considerations
+
+**More useful reports**
+- Budget vs. actual spending per category (set limits in a config file)
+- Month-over-month alerts (e.g. "spent X% more than last month on groceries")
+- Year-end summary for tax time
+
+**Less manual work**
+- Auto-detect bank CSV format so no pre-cleaning needed
+- Duplicate transaction detection — safe to re-upload the same file
+- S3 lifecycle rule to auto-archive old processed files
+
+**More visibility**
+- HTML report attached to the email instead of plain text
+- Multiple notification recipients (family members)
+
+**Smarter categorization**
+- Rules file stored in S3, editable without redeploying (Categorizer reads at runtime)
+- Periodic review flow: pull uncategorized from quarantine, add rules, re-run
+
+**Convenience triggers**
+- Scheduled EventBridge rule for month-end report even if no CSV was uploaded
+- Alert via SES if no CSV uploaded by the 5th of the month

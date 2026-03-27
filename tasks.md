@@ -8,10 +8,10 @@ Tasks are ordered by dependency. Sub-tasks within a group can be parallelised.
 > Foundation everything else depends on. Do this first.
 
 **T-01** *(no dependencies — all parallel)*
-- [ ] **T-01.1** Initialise monorepo — `npm init`, `.gitignore`, `tsconfig.json` at root
-- [ ] **T-01.2** Scaffold CDK app under `infra/` (`cdk init app --language typescript`)
-- [ ] **T-01.3** Create shared types package under `shared/` — `Transaction`, `UncategorizedTransaction`, `CategorizerResult`, Lambda input/output interfaces
-- [ ] **T-01.4** Scaffold each Lambda directory under `lambdas/` with its own `package.json` and `tsconfig.json` (`cleaner`, `categorizer`, `recorder`, `report-maker`, `notifier`)
+- [x] **T-01.1** Initialise monorepo — `npm init`, `.gitignore`, `tsconfig.json` at root
+- [x] **T-01.2** Scaffold CDK app under `infra/` (`cdk init app --language typescript`)
+- [x] **T-01.3** Create shared types package under `shared/` — `Transaction`, `UncategorizedTransaction`, `CategorizerResult`, Lambda input/output interfaces
+- [x] **T-01.4** Scaffold each Lambda directory under `lambdas/` with its own `package.json` and `tsconfig.json` (`cleaner`, `categorizer`, `recorder`, `report-maker`, `notifier`)
 
 ---
 

@@ -1,4 +1,6 @@
 // ── Core domain types ────────────────────────────────────────────────────────
+// no implementation
+
 
 export interface Transaction {
   id: string;

@@ -1,6 +1,6 @@
 // Cleaner: validate CSV schema, normalise rows, quarantine file on bad format.
-import { Handler } from 'aws-lambda';
+import { withLogging } from '@budgetinator/shared';
 
-export const handler: Handler = async (event) => {
+export const handler = withLogging('cleaner', async (event) => {
   return event;
-};
+});

@@ -5,6 +5,9 @@
   "scripts": {
     "build": "tsc"
   },
+  "dependencies": {
+    "@budgetinator/shared": "*"
+  },
   "devDependencies": {
     "@types/aws-lambda": "^8.10.145",
     "typescript": "^5.4.0"

@@ -90,10 +90,14 @@ Tasks are ordered by dependency. Sub-tasks within a group can be parallelised.
 
 ---
 
+## Dev
+- [x] **B-05** Middleware. Setup a layer for lambda logging, with potential to extend.
+
+--
+
 ## Backlog (future)
 
 - [ ] **B-01** Replace string-matching categorizer with scikit-learn ML model (Python Lambda layer)
 - [ ] **B-02** Export `category = "uncategorized"` rows from DynamoDB for labelling / training data
 - [ ] **B-03** Add a user-configurable category rules file (e.g. JSON in S3) so rules can be updated without a deploy
 - [ ] **B-04** Multi-user support (partition data by user ID)
-- [ ] **B-05** Middleware. Setup a layer for lambda logging, with potential to extend.

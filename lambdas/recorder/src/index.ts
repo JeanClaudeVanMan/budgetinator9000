@@ -1,6 +1,6 @@
 // Recorder: persist all categorized and uncategorized rows to DynamoDB.
-import { Handler } from 'aws-lambda';
+import { withLogging } from '@budgetinator/shared';
 
-export const handler: Handler = async (event) => {
+export const handler = withLogging('recorder', async (event) => {
   return event;
-};
+});

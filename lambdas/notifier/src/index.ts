@@ -1,6 +1,6 @@
 // Notifier: send SES email — monthly report for type='report', failure alert for type='error'.
-import { Handler } from 'aws-lambda';
+import { withLogging } from '@budgetinator/shared';
 
-export const handler: Handler = async (event) => {
+export const handler = withLogging('notifier', async (event) => {
   return event;
-};
+});

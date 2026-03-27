@@ -1,6 +1,6 @@
 // Categorizer: string-match rules against descriptions, tag unmatched as uncategorized.
-import { Handler } from 'aws-lambda';
+import { withLogging } from '@budgetinator/shared';
 
-export const handler: Handler = async (event) => {
+export const handler = withLogging('categorizer', async (event) => {
   return event;
-};
+});

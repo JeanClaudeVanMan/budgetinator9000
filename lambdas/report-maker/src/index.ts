@@ -1,6 +1,6 @@
 // Report Maker: aggregate monthly transactions by category, include uncategorized section.
-import { Handler } from 'aws-lambda';
+import { withLogging } from '@budgetinator/shared';
 
-export const handler: Handler = async (event) => {
+export const handler = withLogging('report-maker', async (event) => {
   return event;
-};
+});

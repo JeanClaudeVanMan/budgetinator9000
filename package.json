@@ -4,7 +4,8 @@
   "private": true,
   "workspaces": [
     "lambdas/*",
-    "infra"
+    "infra",
+    "shared"
   ],
   "scripts": {
     "build": "tsc --build",

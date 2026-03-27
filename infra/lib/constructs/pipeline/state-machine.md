@@ -2,12 +2,18 @@
 
 ```mermaid
 flowchart TD
-    Start([Start]) --> Cleaner[CleanerStep\nPass]
-    Cleaner --> Categorizer[CategorizerStep\nPass]
-    Categorizer --> Recorder[RecorderStep\nPass]
-    Recorder --> ReportMaker[ReportMakerStep\nPass]
-    ReportMaker --> Notifier[NotifierStep\nPass]
+    Start([Start]) --> Cleaner[CleanerStep
+LambdaInvoke]
+    Cleaner -->|success| Categorizer[CategorizerStep
+LambdaInvoke]
+    Cleaner -->|CsvSchemaError| NotifyError[NotifyErrorStep
+LambdaInvoke - type:error]
+    Categorizer --> Recorder[RecorderStep
+LambdaInvoke]
+    Recorder --> ReportMaker[ReportMakerStep
+LambdaInvoke]
+    ReportMaker --> Notifier[NotifierStep
+LambdaInvoke - type:report]
     Notifier --> End([End])
+    NotifyError --> Fail([ExecutionFailed])
 ```
-
-> Pass states are placeholders. Replace with Lambda invocations in T-15.1.

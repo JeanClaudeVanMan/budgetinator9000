@@ -2,29 +2,57 @@
   "bmo-visa": {
     "description": "BMO Visa credit card upload",
     "input": {
-      "bucketName": "bg9k-uploads",
-      "objectKey": "uploads/2026-02/bmo-visa.csv"
+      "version": "0",
+      "source": "aws.s3",
+      "detail-type": "Object Created",
+      "region": "us-west-2",
+      "detail": {
+        "bucket": { "name": "bg9k-uploads" },
+        "object": { "key": "uploads/2026-02/bmo-visa.csv" },
+        "reason": "PutObject"
+      }
     }
   },
   "bmo-chequing": {
     "description": "BMO chequing account upload",
     "input": {
-      "bucketName": "bg9k-uploads",
-      "objectKey": "uploads/2026-02/bmo-chequing.csv"
+      "version": "0",
+      "source": "aws.s3",
+      "detail-type": "Object Created",
+      "region": "us-west-2",
+      "detail": {
+        "bucket": { "name": "bg9k-uploads" },
+        "object": { "key": "uploads/2026-02/bmo-chequing.csv" },
+        "reason": "PutObject"
+      }
     }
   },
   "tangerine-mc": {
     "description": "Tangerine Mastercard upload",
     "input": {
-      "bucketName": "bg9k-uploads",
-      "objectKey": "uploads/2026-03/tangerine-mc.csv"
+      "version": "0",
+      "source": "aws.s3",
+      "detail-type": "Object Created",
+      "region": "us-west-2",
+      "detail": {
+        "bucket": { "name": "bg9k-uploads" },
+        "object": { "key": "uploads/2026-03/tangerine-mc.csv" },
+        "reason": "PutObject"
+      }
     }
   },
   "simplii-chequing": {
     "description": "Simplii chequing account upload",
     "input": {
-      "bucketName": "bg9k-uploads",
-      "objectKey": "uploads/2023-06/simplii-chequing.csv"
+      "version": "0",
+      "source": "aws.s3",
+      "detail-type": "Object Created",
+      "region": "us-west-2",
+      "detail": {
+        "bucket": { "name": "bg9k-uploads" },
+        "object": { "key": "uploads/2023-06/simplii-chequing.csv" },
+        "reason": "PutObject"
+      }
     }
   }
 }

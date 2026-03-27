@@ -3,9 +3,9 @@ export function withLogging<TEvent = unknown, TResult = unknown>(
   fn: (event: TEvent) => Promise<TResult>
 ): (event: TEvent) => Promise<TResult> {
   return async (event: TEvent): Promise<TResult> => {
-    console.log(JSON.stringify({ handler: name, phase: '📩 input', event }));
+    console.log(JSON.stringify({ handler: name, phase: 'handling input:::', event }));
     const result = await fn(event);
-    console.log(JSON.stringify({ handler: name, phase: '🚀 output', result }));
+    console.log(JSON.stringify({ handler: name, phase: 'outing output:::', result }));
     return result;
   };
 }

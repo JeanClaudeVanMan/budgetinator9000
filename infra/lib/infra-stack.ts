@@ -73,7 +73,13 @@ export class BaseInfraStack extends cdk.Stack {
       })
     );
 
-    const { stateMachine } = new PipelineStateMachine(this, 'Pipeline');
+    const { stateMachine } = new PipelineStateMachine(this, 'Pipeline', {
+      cleaner,
+      categorizer,
+      recorder,
+      reportMaker,
+      notifier,
+    });
 
     new events.Rule(this, `${appNamePrefix}UploadRule`, {
       eventPattern: {

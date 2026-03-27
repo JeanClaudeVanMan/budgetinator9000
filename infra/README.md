@@ -24,3 +24,8 @@ npm run cdk deploy
 # Bootstrap (first time only, per account/region)
 npx cdk bootstrap
 ```
+
+## Workflow
+- Start with tasks.md + see git state. Which branch? commits? staged?
+- Use skill with `/checklist where did we leave off` to orient self where we are
+- Kick off planning step with next epic
